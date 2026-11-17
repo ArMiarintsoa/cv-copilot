@@ -1,0 +1,10 @@
+{
+  "documents": ["data/samples/cv_ancien.txt"],
+  "offer": "data/samples/offre_exemple.txt",
+  "retrieval_queries": [
+    {"query": "expérience en data science avec Python", "relevant_texts": ["Pipeline de prévision"]},
+    {"query": "diplôme universitaire en informatique", "relevant_texts": ["Master Informatique"]},
+    {"query": "maîtrise de l'anglais", "relevant_texts": ["Anglais"]}
+  ],
+  "expected_facts": ["Python", "Master Informatique", "Orange Madagascar", "Anglais"]
+}

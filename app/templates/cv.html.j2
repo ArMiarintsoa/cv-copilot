@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: A4; margin: 16mm 15mm; }
+  body { font-family: "DejaVu Sans", Arial, sans-serif; font-size: 10pt; color: #1f2937; line-height: 1.4; }
+  h1 { font-size: 20pt; margin: 0; color: #111827; }
+  .titre { font-size: 12pt; color: #2563eb; margin: 2px 0 4px; }
+  .contact { font-size: 9pt; color: #4b5563; }
+  h2 { font-size: 11pt; text-transform: uppercase; letter-spacing: .06em; color: #2563eb;
+       border-bottom: 1px solid #d1d5db; padding-bottom: 2px; margin: 14px 0 6px; }
+  .item { margin-bottom: 8px; page-break-inside: avoid; }
+  .head { display: flex; justify-content: space-between; font-weight: bold; }
+  .dates { font-weight: normal; color: #6b7280; font-size: 9pt; }
+  ul { margin: 3px 0 0 16px; padding: 0; }
+  li { margin-bottom: 2px; }
+  .tags span { display: inline-block; background: #eff6ff; border-radius: 3px; padding: 1px 6px; margin: 0 4px 4px 0; font-size: 9pt; }
+</style>
+</head>
+<body>
+  {% if cv.identite.nom %}<h1>{{ cv.identite.nom }}</h1>{% endif %}
+  {% if cv.identite.titre %}<div class="titre">{{ cv.identite.titre }}</div>{% endif %}
+  <div class="contact">
+    {{ [cv.identite.email, cv.identite.telephone, cv.identite.localisation] | select | join(" · ") }}
+    {% if cv.identite.liens %}<br>{{ cv.identite.liens | join(" · ") }}{% endif %}
+  </div>
+
+  {% if cv.resume %}<h2>Profil</h2><p>{{ cv.resume }}</p>{% endif %}
+
+  {% if cv.experiences %}<h2>Expérience professionnelle</h2>
+  {% for e in cv.experiences %}
+    <div class="item">
+      <div class="head"><span>{{ e.poste }}{% if e.entreprise %} — {{ e.entreprise }}{% endif %}</span><span class="dates">{{ e.dates }}</span></div>
+      <ul>{% for r in e.realisations %}<li>{{ r.texte }}</li>{% endfor %}</ul>
+    </div>
+  {% endfor %}{% endif %}
+
+  {% if cv.formations %}<h2>Formation</h2>
+  {% for f in cv.formations %}
+    <div class="item"><div class="head"><span>{{ f.diplome }}{% if f.etablissement %} — {{ f.etablissement }}{% endif %}</span><span class="dates">{{ f.dates }}</span></div></div>
+  {% endfor %}{% endif %}
+
+  {% if cv.projets %}<h2>Projets</h2>
+  {% for p in cv.projets %}
+    <div class="item"><div class="head">{{ p.nom }}</div>
+      <div>{{ p.description }}</div>
+      {% if p.technologies %}<div class="dates">{{ p.technologies | join(", ") }}</div>{% endif %}
+    </div>
+  {% endfor %}{% endif %}
+
+  {% if cv.competences.techniques %}<h2>Compétences</h2>
+  <div class="tags">{% for c in cv.competences.techniques %}<span>{{ c.texte }}</span>{% endfor %}</div>{% endif %}
+
+  {% if cv.competences.langues %}<h2>Langues</h2>
+  <div class="tags">{% for c in cv.competences.langues %}<span>{{ c.texte }}</span>{% endfor %}</div>{% endif %}
+
+  {% if cv.certifications %}<h2>Certifications</h2>
+  <ul>{% for c in cv.certifications %}<li>{{ c.texte }}</li>{% endfor %}</ul>{% endif %}
+</body>
+</html>

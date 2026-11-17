@@ -1,0 +1,14 @@
+Data Scientist Junior - Banque Horizon
+
+Nous recherchons un(e) Data Scientist junior pour rejoindre notre équipe analytique.
+
+Missions :
+- Construire et déployer des modèles de prévision et de détection d'anomalies.
+- Concevoir des tableaux de bord pour les équipes métiers.
+- Travailler avec des bases SQL et des données volumineuses.
+
+Profil recherché :
+- Master en informatique, statistiques ou science des données.
+- Python (pandas, scikit-learn), SQL, Git.
+- Bonne maîtrise de l'anglais.
+- Connaissance de Docker et d'AWS appréciée.
