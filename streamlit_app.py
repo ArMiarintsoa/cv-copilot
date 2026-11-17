@@ -58,7 +58,11 @@ if go:
     if r.ok:
         st.session_state.result = r.json()
     else:
-        st.error(r.json().get("detail", r.text))
+        try:
+            err_msg = r.json().get("detail", r.text)
+        except Exception:
+            err_msg = r.text or f"Erreur HTTP {r.status_code}"
+        st.error(err_msg)
 
 with col_out:
     st.subheader("3. Résultat")

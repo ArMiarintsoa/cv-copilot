@@ -13,6 +13,20 @@ T = TypeVar("T", bound=BaseModel)
 
 
 def get_llm():
+    if settings.llm_provider == "openai_compatible":
+        # Groq, OpenRouter, Together, Gemini (endpoint OpenAI)… : API hébergée, aucun calcul local
+        from langchain_openai import ChatOpenAI
+
+        if not settings.llm_api_key:
+            raise RuntimeError("LLM_API_KEY manquante dans .env")
+        return ChatOpenAI(
+            model=settings.llm_model,
+            base_url=settings.llm_base_url,
+            api_key=settings.llm_api_key,
+            temperature=0,
+            max_tokens=4096,
+            max_retries=3,
+        )
     if settings.llm_provider == "ollama":
         from langchain_ollama import ChatOllama
 

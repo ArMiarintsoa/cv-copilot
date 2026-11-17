@@ -22,9 +22,9 @@ def extract_text(path: Path) -> str:
 
 
 def _read_pdf(path: Path) -> str:
-    import fitz  # PyMuPDF
+    import pymupdf
 
-    with fitz.open(path) as doc:
+    with pymupdf.open(path) as doc:
         return "\n".join(page.get_text("text") for page in doc)
 
 
