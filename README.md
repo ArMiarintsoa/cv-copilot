@@ -35,7 +35,7 @@ Offre d'emploi → Analyse + requêtes → Retrieval (top-k + rerank)
 python -m venv .venv
 .venv/Scripts/activate
 python -m pip install -r requirements.txt
-cp .env.example .env        # renseigner ANTHROPIC_API_KEY, ou LLM_PROVIDER=ollama
+cp .env.example .env       
 ```
 
 - Pour tester vite, utilisez `EMBEDDING_MODEL=intfloat/multilingual-e5-small` (léger) ; `BAAI/bge-m3` donne la meilleure qualité (~2 Go).
@@ -72,16 +72,3 @@ python -m evaluation.run_eval --dataset evaluation/dataset.example.json --k 5
 | Test utilisateur | 5–10 personnes, qualité + gain de temps | questionnaire à prévoir |
 
 RAGAS / TruLens peuvent s'ajouter par-dessus : les `chunks_used` et le CV sont déjà exposés par `/generate`.
-
-## Garde-fous éthiques
-
-- **Anti-hallucination** : consigne stricte (« n'utilise que le contexte fourni, sinon NON RENSEIGNÉ ») + `source_id` obligatoire + suppression automatique des faits non soutenus. Le rapport liste tout ce qui a été retiré.
-- **Honnêteté** : l'outil reformule et réordonne, il n'embellit pas (pas de chiffres, durées ou responsabilités nouveaux).
-- **Biais** : le prompt interdit d'inférer genre, âge, nationalité, situation familiale ou santé ; pensez à auditer les sorties sur des profils variés.
-- **Données personnelles** : les documents restent dans `data/sessions/` ; avec l'API Claude, les extraits retrouvés sont envoyés au fournisseur (utiliser Ollama pour rester 100 % local).
-
-## Limites connues / pistes
-
-- PDF scannés : pas d'OCR (à ajouter avec Tesseract).
-- Le chunking repose sur des titres de section FR/EN courants et des plages de dates ; des mises en page très atypiques peuvent dégrader le découpage.
-- Pistes : OCR, import LinkedIn (JSON), plusieurs templates, historique de versions, évaluation RAGAS.
