@@ -1,0 +1,56 @@
+services:
+  # -----------------------------------------------------------
+  # Backend API (FastAPI)
+  # -----------------------------------------------------------
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cv-copilot-api
+    command: uvicorn app.api:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - DATA_DIR=/app/data/sessions
+    volumes:
+      # Montage du code source en direct (hot-reload)
+      - ./app:/app/app
+      # Persistance des sessions et du cache des modèles Hugging Face
+      - cv_data:/app/data/sessions
+      - hf_cache:/root/.cache/huggingface
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+
+  # -----------------------------------------------------------
+  # Frontend UI (Streamlit)
+  # -----------------------------------------------------------
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cv-copilot-streamlit
+    command: streamlit run streamlit_app.py --server.port=8501 --server.address=0.0.0.0 --server.runOnSave=true
+    ports:
+      - "8501:8501"
+    environment:
+      # Le frontend communique avec le backend via le nom de service Docker
+      - API_URL=http://api:8000
+    volumes:
+      # Montage du script Streamlit et du code app en direct
+      - ./streamlit_app.py:/app/streamlit_app.py
+      - ./app:/app/app
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  cv_data:
+  hf_cache:
