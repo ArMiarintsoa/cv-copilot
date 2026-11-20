@@ -7,9 +7,9 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cv-copilot-api
-    command: uvicorn app.api:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/app
+    command: uvicorn app.api:app --host 0.0.0.0 --port 8001 --reload --reload-dir /app/app
     ports:
-      - "8000:8000"
+      - "8001:8000"
     env_file:
       - .env
     environment:
