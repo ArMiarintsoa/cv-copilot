@@ -21,7 +21,7 @@ services:
       - cv_data:/app/data/sessions
       - hf_cache:/root/.cache/huggingface
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -41,7 +41,7 @@ services:
       - "8501:8501"
     environment:
       # Le frontend communique avec le backend via le nom de service Docker
-      - API_URL=http://api:8000
+      - API_URL=http://api:8001
     volumes:
       # Montage du script Streamlit et du code app en direct
       - ./streamlit_app.py:/app/streamlit_app.py
