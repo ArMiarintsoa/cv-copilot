@@ -36,7 +36,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cv-copilot-streamlit
-    command: streamlit run streamlit_app.py --server.port=8501 --server.address=0.0.0.0 --server.runOnSave=true
+    # command: streamlit run streamlit_app.py --server.port=8501 --server.address=0.0.0.0 --server.runOnSave=true
+    command: streamlit run streamlit_app.py --server.port 8501 --server.baseUrlPath cv-copilot-streamlit
     ports:
       - "8501:8501"
     environment:
